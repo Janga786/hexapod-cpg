@@ -1,0 +1,73 @@
+# ---- Python --------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+pip-wheel-metadata/
+.eggs/
+
+# ---- Virtual environments ------------------------------------------------
+.venv/
+venv/
+env/
+.env/
+ENV/
+
+# ---- Testing & coverage --------------------------------------------------
+.tox/
+.nox/
+.pytest_cache/
+.cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# ---- Type checkers / linters ---------------------------------------------
+.mypy_cache/
+.ruff_cache/
+
+# ---- Notebooks -----------------------------------------------------------
+.ipynb_checkpoints/
+
+# ---- Editors & IDEs ------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# ---- macOS / Windows / Linux ---------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ---- Office lock files ---------------------------------------------------
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# ---- SolidWorks lock files ----------------------------------------------
+~$*.sldprt
+~$*.sldasm
+
+# ---- Arduino build artefacts --------------------------------------------
+*.hex
+*.elf
+build-*
+
+# ---- Project-specific ----------------------------------------------------
+.claude/
+*.log

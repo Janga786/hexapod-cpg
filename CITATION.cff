@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: "Hexapod CPG — Bio-inspired Locomotion on a Custom 18-DoF Robot"
+message: "If you reference this code in academic or industrial work, please cite as below."
+type: software
+authors:
+  - family-names: Janga
+    given-names: Bliss
+abstract: >-
+  An end-to-end hexapod robotics project: full mechanical CAD, Arduino-Mega
+  firmware with IMU heading-hold tripod walking and bump avoidance, and a
+  Python central-pattern-generator (CPG) simulation built on a network of
+  six Kuramoto-coupled phase oscillators.  Three gait patterns (wave,
+  ripple, tripod) emerge from a single parameter (natural frequency ω) and
+  the resulting foot trajectories drive a geometry-faithful 18-DoF inverse-
+  kinematics solver.  A real-time matplotlib visualiser exposes the dynamics
+  of the CPG itself (phase wheel, gait diagram, order parameter) rather than
+  only the resulting motion.
+keywords:
+  - robotics
+  - hexapod
+  - central-pattern-generator
+  - kuramoto
+  - coupled-oscillators
+  - gait-generation
+  - inverse-kinematics
+  - arduino
+  - imu
+  - bioinspired-robotics
+license: MIT
+version: "1.0.0"
+date-released: "2026-04-29"

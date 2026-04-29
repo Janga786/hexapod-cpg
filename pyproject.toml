@@ -1,0 +1,104 @@
+[build-system]
+requires      = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name        = "hexapod-cpg"
+version     = "1.0.0"
+description = "Custom 18-DoF hexapod robot — Kuramoto-CPG locomotion controller, real-time gait visualiser, IMU heading-hold firmware, and full mechanical CAD."
+readme      = "README.md"
+requires-python = ">=3.10"
+license     = { text = "MIT" }
+authors     = [
+    { name = "Bliss Janga" },
+]
+keywords    = [
+    "robotics",
+    "hexapod",
+    "central-pattern-generator",
+    "kuramoto",
+    "coupled-oscillators",
+    "gait-generation",
+    "inverse-kinematics",
+    "arduino",
+    "imu",
+    "complementary-filter",
+    "bioinspired-robotics",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+dependencies = [
+    "numpy>=1.23",
+    "matplotlib>=3.6",
+    "pillow>=9.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4",
+]
+
+[project.urls]
+Homepage      = "https://github.com/Janga786/hexapod-cpg"
+Repository    = "https://github.com/Janga786/hexapod-cpg"
+"Bug Tracker" = "https://github.com/Janga786/hexapod-cpg/issues"
+
+[tool.setuptools]
+package-dir = { "" = "sim" }
+packages    = ["hexapod_cpg"]
+
+[tool.setuptools.package-data]
+hexapod_cpg = ["py.typed"]
+
+# ---------------------------------------------------------------------------
+# Tooling
+# ---------------------------------------------------------------------------
+
+[tool.pytest.ini_options]
+testpaths      = ["sim/tests"]
+addopts        = "-ra --strict-markers --strict-config"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 13   # the keyboard dispatcher in viz.py is a long elif chain
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # Pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "C90",  # mccabe complexity
+]
+ignore = [
+    "E741",  # ambiguous variable names (a, alpha, d are math conventions)
+    "N802",  # function names (allow Rx/Rz/CPGViz/etc.)
+    "N803",  # argument names (allow Q, T, R, K for math objects)
+    "N806",  # variable names (allow Q, T, R, J, K for math objects)
+]
