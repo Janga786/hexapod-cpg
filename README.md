@@ -14,6 +14,13 @@
 
 <br/>
 
+<img src="figures/hexapod_hero.jpg" alt="The hexapod robot in the field" width="92%"/>
+
+<br/>
+<sub>The hexapod, fielded at the Great Sand Dunes for a robotics challenge.  18-DoF body, fully 3-D-printed chassis, autonomous Arduino-Mega firmware with closed-loop IMU heading hold and bump-avoidance.</sub>
+
+<br/><br/>
+
 <img src="animations/cpg_dashboard_teaser.gif" alt="CPG simulator dashboard" width="92%"/>
 
 <br/>
@@ -27,7 +34,8 @@
 
 - [Overview](#overview)
 - [Highlights](#highlights)
-- [Gallery](#gallery)
+- [The robot in the field](#the-robot-in-the-field)
+- [Simulator gallery](#simulator-gallery)
 - [Mathematical foundations](#mathematical-foundations)
 - [Repository layout](#repository-layout)
 - [Quick start](#quick-start)
@@ -85,7 +93,30 @@ controllers work.
 
 ---
 
-## Gallery
+## The robot in the field
+
+<table>
+<tr>
+<td align="center" width="50%">
+<img src="figures/hexapod_walking_obstacles.jpg" alt="Walking through obstacles" width="100%"/><br/>
+<sub><b>In motion.</b>  The robot navigating loose sand and small rocks; the front-mounted cardboard panels are field-added obstacle-clearing flippers used during the challenge.</sub>
+</td>
+<td align="center" width="50%">
+<img src="figures/hexapod_in_field.jpg" alt="Three-quarter view with foot tracks" width="100%"/><br/>
+<sub><b>After a run.</b>  Three-quarter rear view showing the gait pattern in the foot tracks left in the sand — the alternating pairs are the tripod groups marching across the surface.</sub>
+</td>
+</tr>
+<tr>
+<td align="center" colspan="2">
+<img src="figures/hexapod_workbench.jpg" alt="Side view, on a workbench" width="60%"/><br/>
+<sub><b>Mechanism detail.</b>  Side view on the workbench between runs.  Three servos per leg (coxa / femur / tibia), one Arduino Mega + IMU on top, blue TPU foot bumpers for sensor-friendly ground contact.</sub>
+</td>
+</tr>
+</table>
+
+---
+
+## Simulator gallery
 
 <table>
 <tr>
@@ -486,6 +517,7 @@ The mechanical chassis design derives from the open-source
 
 <div align="center">
 <sub>
+Field photographs courtesy of Fort Lewis College — used with permission.<br/>
 <i>"Six legs.  Six oscillators.  Synchronisation does the rest."</i>
 </sub>
 </div>
