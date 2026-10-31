@@ -2,7 +2,7 @@
 
 # Hexapod CPG · Bio-inspired Locomotion on a Custom 18-DoF Robot
 
-**An end-to-end hexapod robotics project — full mechanical CAD, autonomous Arduino-Mega firmware with closed-loop IMU heading hold, and a Python central-pattern-generator simulation built on six Kuramoto-coupled phase oscillators where wave / ripple / tripod gaits emerge from a single parameter rather than being hard-coded.**
+**A four-person team's field hexapod and its locomotion study — mechanical CAD (chassis derived from Mark W's open-source skeleton), autonomous Arduino-Mega firmware with closed-loop IMU heading hold (extended from Mark W's original), and a Python central-pattern-generator simulation built on six Kuramoto-coupled phase oscillators where wave / ripple / tripod gaits arise from a single parameter. The CPG runs in simulation only; the fielded robot walked under the Arduino firmware. See [Attribution](#attribution).**
 
 [![CI](https://github.com/Janga786/hexapod-cpg/actions/workflows/ci.yml/badge.svg)](https://github.com/Janga786/hexapod-cpg/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
@@ -10,7 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Code style: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Tests](https://img.shields.io/badge/tests-34%20passing-brightgreen.svg)](#testing)
-[![DOI ready](https://img.shields.io/badge/citation-CITATION.cff-orange.svg)](CITATION.cff)
+[![Citation](https://img.shields.io/badge/citation-CITATION.cff-orange.svg)](CITATION.cff)
 
 <br/>
 
@@ -52,17 +52,23 @@
 
 ## Overview
 
-This repository documents a hexapod robot built from the ground up: a
-fully 3-D-printed chassis (~75 printed parts, all included as STL),
+This repository documents the hexapod our four-person Fort Lewis College
+team built and fielded for the NASA-sponsored Colorado Robotics Challenge
+(I led the team): a fully 3-D-printed chassis (~75 printed parts, all
+included as STL; the skeleton derives from Mark W's open-source design),
 an Arduino-Mega-2560 firmware stack with closed-loop IMU heading
-hold + bump-avoidance + scripted performance routines, and a Python
-central-pattern-generator (CPG) simulation that turns a network of six
-coupled Kuramoto oscillators into smooth, gait-correct locomotion.
+hold + bump-avoidance + scripted performance routines (extended from
+Mark W's original firmware), and a Python central-pattern-generator (CPG)
+simulation that turns a network of six coupled Kuramoto oscillators into
+smooth, gait-correct locomotion. The CPG is a post-challenge simulation
+study; it has not driven the physical robot.
 
-The interesting bit is the CPG: rather than hard-coding the wave /
-ripple / tripod gait patterns, the simulation lets them **emerge from
-the dynamics of the oscillator network** as a single parameter — the
-natural-frequency drive ω — is varied.  Watch a phase wheel collapse
+The interesting bit is the CPG: rather than storing the wave / ripple /
+tripod gaits as separate hard-coded tables, the simulation produces all
+three from **one oscillator network** as a single parameter — the
+natural-frequency drive ω — is varied (the inter-leg phase targets blend
+between designed wave and tripod offset matrices; the synchronization
+onto those targets is what the dynamics provide).  Watch a phase wheel collapse
 from random initial conditions into the tripod attractor and you get
 an unusually clean intuition for why bio-inspired locomotion
 controllers work.
@@ -82,7 +88,7 @@ controllers work.
 | :--- | :--- | :--- |
 | 6-oscillator Kuramoto CPG with smooth wave⇄tripod blending | `hexapod_cpg.cpg.CPGNetwork` | high-ω locks to coherence > 0.85 in < 5 s; survives π perturbation kicks |
 | 18-DoF analytical inverse kinematics with reach + servo-limit checks | `hexapod_cpg.geometry.ik` | round-trip IK→FK exact at neutral pose for every leg |
-| Foot-trajectory generator (cosine stance, smoothstep swing, sin-arc lift) | `hexapod_cpg.cpg.CPGNetwork._feet_from_phases` | ω-dependent duty factor 0.50–0.72 |
+| Foot-trajectory generator (cosine stance, smoothstep swing, sin-arc lift) | `hexapod_cpg.cpg.CPGNetwork._feet_from_phases` | ω-dependent duty factor, 0.62–0.70 over ω = 1–5 (clamped to 0.50–0.72) |
 | Real-time 4-panel matplotlib dashboard (3-D, phase wheel, gait diagram, status) | `hexapod_cpg.viz.CPGViz` | 30 fps on a stock laptop |
 | **Closed-loop IMU heading hold** (P + complementary filter) on the real robot | `firmware/hexapod_full/` | gyro-bias auto-cal + mag fusion; field-tunable `K_p` and `α` in `config.h` |
 | Bump-avoidance state machine (walk → backup → turn → walk) | `firmware/hexapod_full/` | 1.5 s debounce, ramped speed transitions |
@@ -126,7 +132,7 @@ controllers work.
 </td>
 <td align="center" width="50%">
 <img src="animations/walk_wave.gif" alt="Wave gait" width="100%"/><br/>
-<sub><b>Wave gait.</b>  ω = 1.0 rad/s.  60° front-to-back propagation; five legs always in stance for maximum stability.</sub>
+<sub><b>Wave gait.</b>  ω = 1.0 rad/s.  60° front-to-back propagation at a high duty factor (β ≈ 0.70 — roughly four legs in stance at any moment).</sub>
 </td>
 </tr>
 <tr>
@@ -479,6 +485,18 @@ The test suite covers:
 
 ---
 
+## Attribution
+
+The field robot was a **four-person team effort** (I led the team); teammates'
+challenge-era code lives outside this repository. The chassis skeleton and the
+original PS2-controller firmware are **Mark W's open-source work**
+([projectsofdan.com](https://www.projectsofdan.com/?cat=4)); the autonomous
+heading-hold firmware here is my modification and extension of that original
+(see the header of `firmware/hexapod_full/`). The IMU and PS2 drivers are the
+SparkFun and Bill Porter libraries (references 6-7). The Kuramoto CPG
+simulator, visualizations, and 34-test suite are my later, individual work --
+in simulation only.
+
 ## References
 
 1. Y. Kuramoto. *Chemical Oscillations, Waves, and Turbulence*. Springer, 1984.
@@ -498,7 +516,7 @@ If you reference this code, please cite via the
 
 ```bibtex
 @software{janga2026hexapod,
-  author  = {Janga, Bliss},
+  author  = {Bliss, Jangara},
   title   = {Hexapod CPG: Bio-inspired Locomotion on a Custom 18-DoF Robot},
   year    = {2026},
   version = {1.0.0},
