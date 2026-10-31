@@ -50,7 +50,7 @@ def duty_factor(omega: float) -> float:
     Return the gait duty factor for ``omega``.
 
     The duty factor is the fraction of one cycle that a foot spends in
-    stance; it falls from ~0.72 at low ω to ~0.50 at high ω, modelling
+    stance; it falls from ~0.71 at low ω to ~0.60 at high ω (clamped to 0.50–0.72), modelling
     the empirical observation that fast hexapods spend less time on
     each foot.
     """
