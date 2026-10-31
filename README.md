@@ -488,7 +488,9 @@ The test suite covers:
 ## Attribution
 
 The field robot was a **four-person team effort** (I led the team); teammates'
-challenge-era code lives outside this repository. The chassis skeleton and the
+challenge-era code lives in the team's own repositories under another GitHub
+account. The leg geometry/IK in the legacy firmware derives from external
+reference implementations credited in the source headers. The chassis skeleton and the
 original PS2-controller firmware are **Mark W's open-source work**
 ([projectsofdan.com](https://www.projectsofdan.com/?cat=4)); the autonomous
 heading-hold firmware here is my modification and extension of that original
