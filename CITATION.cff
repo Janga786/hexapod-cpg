@@ -3,8 +3,8 @@ title: "Hexapod CPG — Bio-inspired Locomotion on a Custom 18-DoF Robot"
 message: "If you reference this code in academic or industrial work, please cite as below."
 type: software
 authors:
-  - family-names: Janga
-    given-names: Bliss
+  - family-names: Bliss
+    given-names: Jangara
 abstract: >-
   An end-to-end hexapod robotics project: full mechanical CAD, Arduino-Mega
   firmware with IMU heading-hold tripod walking and bump avoidance, and a
