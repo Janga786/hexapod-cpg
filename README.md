@@ -4,6 +4,8 @@
 
 **A four-person team's field hexapod and its locomotion study — mechanical CAD (chassis derived from Mark W's open-source skeleton), autonomous Arduino-Mega firmware with closed-loop IMU heading hold (extended from Mark W's original), and a Python central-pattern-generator simulation built on six Kuramoto-coupled phase oscillators where wave / ripple / tripod gaits arise from a single parameter. The CPG runs in simulation only; the fielded robot walked under the Arduino firmware. See [Attribution](#attribution).**
 
+**Project page: [janga786.github.io/projects/hexapod-nasa-challenge](https://janga786.github.io/projects/hexapod-nasa-challenge/)**
+
 [![CI](https://github.com/Janga786/hexapod-cpg/actions/workflows/ci.yml/badge.svg)](https://github.com/Janga786/hexapod-cpg/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![Arduino](https://img.shields.io/badge/firmware-Arduino%20Mega-00979d.svg)](firmware/)
