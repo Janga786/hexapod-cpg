@@ -214,7 +214,7 @@ $$
 $$
 
 with $\eta_i \sim \mathcal{N}(0, \sigma)$ a small phase noise injection so the
-emergence remains visible from random initial conditions.
+lock-in to the target pattern is visible from random initial conditions.
 
 The phase-offset matrix $\theta_{ij}(\omega)$ smoothly interpolates between
 two target patterns:
