@@ -176,7 +176,7 @@ Python 3.10/3.11/3.12 on Ubuntu and macOS, via GitHub Actions. CI also runs
 </td>
 <td align="center" width="33%">
 <img src="figures/gait_comparison.png" alt="Gait diagrams" width="100%"/><br/>
-<sub><b>Gait diagrams.</b>  Stance/swing patterns at ω = 1, 3, 5 rad/s.  Wave / ripple / tripod emerge from <em>the same</em> CPG.</sub>
+<sub><b>Gait diagrams.</b>  Stance/swing patterns at ω = 1, 3, 5 rad/s.  Wave / ripple / tripod from <em>the same</em> CPG.</sub>
 </td>
 <td align="center" width="33%">
 <img src="figures/oscillator_timeseries.png" alt="Phase timeseries + coherence" width="100%"/><br/>
