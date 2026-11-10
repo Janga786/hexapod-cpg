@@ -1,10 +1,10 @@
 # Hardware
 
 Mechanical CAD, bill-of-materials, and printable-parts list for the
-hexapod chassis.  The mechanical design follows the
-[Mark W. hexapod skeleton](https://www.projectsofdan.com/) family
-of frames, customised with a printed receiver / SBEC / IMU mounting
-shelf and TPU foot bumpers for sensor-friendly contact.
+hexapod chassis.  The printed skeleton is Mark W's open-source
+[hexapod design](https://www.projectsofdan.com/), and the print list
+below is his.  The SolidWorks parts (foot models with sensor mounts,
+a dome cover, a buck-converter holder) were added for this build.
 
 ## Layout
 
@@ -26,7 +26,7 @@ sub-assembly only.  The Fusion 360 archive
 
 The detailed printing instructions are in
 [`docs/printing_instructions.docx`](../docs/printing_instructions.docx).
-Summary:
+Summary (124 printed parts in total):
 
 ### PLA, 30 % infill, **no support**
 - 1 × Body Bottom Plate
