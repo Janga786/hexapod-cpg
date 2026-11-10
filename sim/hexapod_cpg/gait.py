@@ -8,9 +8,9 @@ drive :math:`\\omega`:
 ============ =================== ============== ===========
 Gait         Phase pattern       Duty factor    Stable for
 ============ =================== ============== ===========
-Wave         60° front-to-back   ~ 0.83         low ω
-Ripple       intermediate        ~ 0.67         mid ω
-Tripod       two anti-phase      ~ 0.50         high ω
+Wave         60° front-to-back   ~ 0.70         low ω
+Ripple       intermediate        ~ 0.66         mid ω
+Tripod       two anti-phase      ~ 0.62         high ω
              groups
 ============ =================== ============== ===========
 
@@ -50,7 +50,7 @@ def duty_factor(omega: float) -> float:
     Return the gait duty factor for ``omega``.
 
     The duty factor is the fraction of one cycle that a foot spends in
-    stance; it falls from ~0.71 at low ω to ~0.60 at high ω (clamped to 0.50–0.72), modelling
+    stance; it falls linearly from 0.70 at ω = 1 to 0.62 at ω = 5 (clamped to 0.50–0.72), modelling
     the empirical observation that fast hexapods spend less time on
     each foot.
     """
