@@ -1,103 +1,122 @@
 <div align="center">
 
-# Hexapod CPG · Bio-inspired Locomotion on a Custom 18-DoF Robot
-
-**A four-person team's field hexapod and its locomotion study — mechanical CAD (chassis derived from Mark W's open-source skeleton), autonomous Arduino-Mega firmware with closed-loop IMU heading hold (extended from Mark W's original), and a Python central-pattern-generator simulation built on six Kuramoto-coupled phase oscillators where wave / ripple / tripod gaits arise from a single parameter. The CPG runs in simulation only; the fielded robot walked under the Arduino firmware. See [Attribution](#attribution).**
-
-**Project page: [janga786.github.io/projects/hexapod-nasa-challenge](https://janga786.github.io/projects/hexapod-nasa-challenge/)**
+# Hexapod CPG: an 18-DoF field hexapod and a Kuramoto gait simulator
 
 [![CI](https://github.com/Janga786/hexapod-cpg/actions/workflows/ci.yml/badge.svg)](https://github.com/Janga786/hexapod-cpg/actions/workflows/ci.yml)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
-[![Arduino](https://img.shields.io/badge/firmware-Arduino%20Mega-00979d.svg)](firmware/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Code style: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Tests](https://img.shields.io/badge/tests-34%20passing-brightgreen.svg)](#testing)
-[![Citation](https://img.shields.io/badge/citation-CITATION.cff-orange.svg)](CITATION.cff)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-<br/>
+<img src="figures/hexapod_hero.jpg" alt="The hexapod robot on sand during the challenge" width="92%"/>
 
-<img src="figures/hexapod_hero.jpg" alt="The hexapod robot in the field" width="92%"/>
-
-<br/>
-<sub>The hexapod, fielded at the Great Sand Dunes for a robotics challenge.  18-DoF body, fully 3-D-printed chassis, autonomous Arduino-Mega firmware with closed-loop IMU heading hold and bump-avoidance.</sub>
-
-<br/><br/>
-
-<img src="animations/cpg_dashboard_teaser.gif" alt="CPG simulator dashboard" width="92%"/>
-
-<br/>
-<sub>The CPG simulator dashboard — left: 3-D body and per-leg foot trails; top right: the phase wheel; middle right: a rolling gait diagram; bottom right: a live status panel.  All four panels are driven from one ``FuncAnimation`` loop at 30 fps.</sub>
+<sub>The team's hexapod on sand at Great Sand Dunes during the Colorado Robotics Challenge.</sub>
 
 </div>
+
+This repository has two related parts. The first is the 18-DoF hexapod that
+our four-person Fort Lewis College team built and fielded for NASA Space
+Grant's Colorado Robotics Challenge (Oct 2025 – Apr 2026, advisor
+Dr. Charles Hakes). I led the team. The second is a Python central pattern
+generator (CPG) simulator I wrote afterwards, in which six Kuramoto-coupled
+phase oscillators produce wave, ripple and tripod gaits. **The CPG runs in
+simulation only. The fielded robot walked under the Arduino firmware.**
+
+Project page: [janga786.github.io/projects/hexapod-nasa-challenge](https://janga786.github.io/projects/hexapod-nasa-challenge/)
+
+## Attribution
+
+| Who | What |
+| :--- | :--- |
+| **Me (Jangara Bliss)** | Led the four-person team. Designed the electrical system: Arduino Mega 2560, SparkFun ICM-20948 9-DoF IMU, foot bump switches, LiPo + SBEC power ([`docs/wiring.md`](docs/wiring.md)). Extended the firmware in [`firmware/hexapod_full/`](firmware/hexapod_full/) with gyro-magnetometer heading hold, gyro-bias calibration at startup, and bump avoidance. Later, on my own, wrote the Kuramoto CPG simulator in [`sim/`](sim/), its figures and animations, and its 34-test suite. |
+| **The team (four students, including me)** | Built, assembled and operated the physical robot in the field. Teammates' challenge-era code lives in the team's own repositories under another GitHub account. |
+| **Mark W (open-source original)** | The 3-D-printed chassis skeleton and the original PS2-controller firmware ([projectsofdan.com](https://www.projectsofdan.com/?cat=4)). [`firmware/legacy_ps2/`](firmware/legacy_ps2/) and [`firmware/ps2_test/`](firmware/ps2_test/) are his sketches. [`firmware/hexapod_full/`](firmware/hexapod_full/) is his firmware modified and extended for this robot (see its header). |
+| **Other references and libraries** | The leg geometry and IK in the original firmware follow the external references credited in its source header. The IMU and PS2 drivers are the SparkFun ICM-20948 library and Bill Porter's PS2X library. |
+
+## The challenge and outcome
+
+The robot walked outdoors on loose sand and small rocks at Great Sand Dunes
+(photos [below](#the-robot-in-the-field)). In walk mode the firmware holds a
+compass heading with a gyro-magnetometer complementary filter and a
+P-controller, and backs up and turns when a front foot hits an obstacle.
+This repository does not record a placement, a timed course result, or a
+repeatable terrain success rate, so the field work is evidence of a working,
+integrated robot rather than a measured locomotion result.
+
+## Run the simulator
+
+```bash
+git clone https://github.com/Janga786/hexapod-cpg.git
+cd hexapod-cpg
+python -m venv .venv && source .venv/bin/activate
+
+make dev           # editable install + dev tools
+make test          # 34 tests, under 1 s
+make sim           # live 4-panel dashboard
+make gallery       # regenerate every figure and animation (about 3 minutes)
+```
+
+Dependencies: `numpy`, `matplotlib`, `pillow`. CI tests Python 3.10, 3.11
+and 3.12 on Ubuntu and macOS.
+
+<div align="center">
+<img src="animations/cpg_dashboard_teaser.gif" alt="CPG simulator dashboard" width="92%"/>
+
+<sub>Simulator dashboard: 3-D body with foot trails, phase wheel, rolling gait diagram, status panel.</sub>
+</div>
+
+## Limitations
+
+- The CPG has never driven the physical robot. It is a kinematic simulation
+  only: no dynamics, contact or terrain model.
+- In the CPG, the target phase offsets are designed. A smoothstep in ω blends
+  a wave offset matrix into a tripod offset matrix, and "ripple" is the
+  intermediate blend. The oscillator coupling makes the legs lock onto those
+  targets from random starting phases; the gait patterns themselves are not
+  discovered by the network.
+- The firmware has no automated tests, and no field logs (heading error,
+  bump events, distance walked) are kept in this repository.
+- Not done: driving the real robot from the CPG over serial, and feeding foot
+  contact back into the oscillators.
 
 ---
 
 ## Contents
 
-- [Overview](#overview)
+- [Attribution](#attribution)
+- [The challenge and outcome](#the-challenge-and-outcome)
+- [Run the simulator](#run-the-simulator)
+- [Limitations](#limitations)
 - [Highlights](#highlights)
 - [The robot in the field](#the-robot-in-the-field)
 - [Simulator gallery](#simulator-gallery)
 - [Mathematical foundations](#mathematical-foundations)
 - [Repository layout](#repository-layout)
-- [Quick start](#quick-start)
+- [Python example](#python-example)
 - [Reproducing every figure & animation](#reproducing-every-figure--animation)
 - [Firmware overview](#firmware-overview)
 - [Hardware overview](#hardware-overview)
 - [Testing](#testing)
-- [Roadmap](#roadmap)
 - [References](#references)
 - [Citation](#citation)
 - [License](#license)
 
 ---
 
-## Overview
-
-This repository documents the hexapod our four-person Fort Lewis College
-team built and fielded for the NASA-sponsored Colorado Robotics Challenge
-(I led the team): a fully 3-D-printed chassis (~75 printed parts, all
-included as STL; the skeleton derives from Mark W's open-source design),
-an Arduino-Mega-2560 firmware stack with closed-loop IMU heading
-hold + bump-avoidance + scripted performance routines (extended from
-Mark W's original firmware), and a Python central-pattern-generator (CPG)
-simulation that turns a network of six coupled Kuramoto oscillators into
-smooth, gait-correct locomotion. The CPG is a post-challenge simulation
-study; it has not driven the physical robot.
-
-The interesting bit is the CPG: rather than storing the wave / ripple /
-tripod gaits as separate hard-coded tables, the simulation produces all
-three from **one oscillator network** as a single parameter — the
-natural-frequency drive ω — is varied (the inter-leg phase targets blend
-between designed wave and tripod offset matrices; the synchronization
-onto those targets is what the dynamics provide).  Watch a phase wheel collapse
-from random initial conditions into the tripod attractor and you get
-an unusually clean intuition for why bio-inspired locomotion
-controllers work.
-
-> **Why this matters.** Hexapod gait is usually presented as a fixed
-> set of phase tables (\"five down, one up\" for wave; \"three down,
-> three up\" for tripod).  This project shows that *all* three
-> patterns are stable attractors of the *same* coupled-oscillator
-> network — the gait you observe is a continuous function of ω, and
-> the transition between gaits is something the CPG handles for free.
-
----
-
 ## Highlights
 
-| Capability | Implementation | Verified to |
+| Capability | Implementation | Notes |
 | :--- | :--- | :--- |
-| 6-oscillator Kuramoto CPG with smooth wave⇄tripod blending | `hexapod_cpg.cpg.CPGNetwork` | high-ω locks to coherence > 0.85 in < 5 s; survives π perturbation kicks |
-| 18-DoF analytical inverse kinematics with reach + servo-limit checks | `hexapod_cpg.geometry.ik` | round-trip IK→FK exact at neutral pose for every leg |
-| Foot-trajectory generator (cosine stance, smoothstep swing, sin-arc lift) | `hexapod_cpg.cpg.CPGNetwork._feet_from_phases` | ω-dependent duty factor, 0.62–0.70 over ω = 1–5 (clamped to 0.50–0.72) |
-| Real-time 4-panel matplotlib dashboard (3-D, phase wheel, gait diagram, status) | `hexapod_cpg.viz.CPGViz` | 30 fps on a stock laptop |
-| **Closed-loop IMU heading hold** (P + complementary filter) on the real robot | `firmware/hexapod_full/` | gyro-bias auto-cal + mag fusion; field-tunable `K_p` and `α` in `config.h` |
-| Bump-avoidance state machine (walk → backup → turn → walk) | `firmware/hexapod_full/` | 1.5 s debounce, ramped speed transitions |
-| 6 scripted performance routines (wave, sway, pump, twist, stomp, full) | `firmware/hexapod_full/` | open-loop time-varying foot-position offsets |
-| Programmatic CAD bill-of-materials (≈75 printed parts) | `hardware/cad/`              | STL + SolidWorks + STEP + Fusion archive |
+| 6-oscillator Kuramoto CPG with smooth wave-to-tripod blending | `hexapod_cpg.cpg.CPGNetwork` | Tested: high ω locks to coherence > 0.85 within 5 s; recovers from a π perturbation |
+| 18-DoF analytical inverse kinematics with reach and servo-limit checks | `hexapod_cpg.geometry.ik` | Tested: IK→FK round trip exact at the neutral pose for every leg |
+| Foot-trajectory generator (cosine stance, smoothstep swing, sine-arc lift) | `hexapod_cpg.cpg.CPGNetwork._feet_from_phases` | Duty factor 0.70 to 0.62 over ω = 1–5 |
+| 4-panel matplotlib dashboard (3-D, phase wheel, gait diagram, status) | `hexapod_cpg.viz.CPGViz` | 30 fps target (33 ms frame interval) |
+| Heading hold on the robot (complementary filter + P-controller) | `firmware/hexapod_full/` | Gyro-bias calibration at startup; `K_p` and `α` in `config.h`; no automated tests |
+| Bump-avoidance state machine (walk, back up, turn, walk) | `firmware/hexapod_full/` | 1.5 s debounce, ramped speed transitions |
+| 6 scripted motion routines (wave, sway, pump, twist, stomp, full) | `firmware/hexapod_full/` | Open-loop, time-varying foot offsets |
+| Mechanical CAD | `hardware/cad/` | 22 STL, 12 SolidWorks parts, STEP and Fusion archive; 124 printed parts per the print list |
 
-**34 pytest tests** running on every push across Python 3.10/3.11/3.12 on Ubuntu and macOS via GitHub Actions. The suite is < 1 s wall-clock.
+The 34 pytest tests run on every push to `main` and on pull requests, across
+Python 3.10/3.11/3.12 on Ubuntu and macOS, via GitHub Actions. CI also runs
+`ruff` and a smoke test of four rendering scripts.
 
 ---
 
@@ -107,17 +126,17 @@ controllers work.
 <tr>
 <td align="center" width="50%">
 <img src="figures/hexapod_walking_obstacles.jpg" alt="Walking through obstacles" width="100%"/><br/>
-<sub><b>In motion.</b>  The robot navigating loose sand and small rocks; the front-mounted cardboard panels are field-added obstacle-clearing flippers used during the challenge.</sub>
+<sub><b>In motion.</b>  The robot on loose sand and small rocks. The flat panels on the front legs were added in the field.</sub>
 </td>
 <td align="center" width="50%">
-<img src="figures/hexapod_in_field.jpg" alt="Three-quarter view with foot tracks" width="100%"/><br/>
-<sub><b>After a run.</b>  Three-quarter rear view showing the gait pattern in the foot tracks left in the sand — the alternating pairs are the tripod groups marching across the surface.</sub>
+<img src="figures/hexapod_in_field.jpg" alt="Three-quarter view on sand" width="100%"/><br/>
+<sub><b>On the dunes.</b>  Three-quarter rear view on rippled sand.</sub>
 </td>
 </tr>
 <tr>
 <td align="center" colspan="2">
-<img src="figures/hexapod_workbench.jpg" alt="Side view, on a workbench" width="60%"/><br/>
-<sub><b>Mechanism detail.</b>  Side view on the workbench between runs.  Three servos per leg (coxa / femur / tibia), one Arduino Mega + IMU on top, blue TPU foot bumpers for sensor-friendly ground contact.</sub>
+<img src="figures/hexapod_workbench.jpg" alt="Side view, on a table" width="60%"/><br/>
+<sub><b>Between runs.</b>  Three servos per leg (coxa, femur, tibia), electronics on top, blue TPU foot bumpers.</sub>
 </td>
 </tr>
 </table>
@@ -140,11 +159,11 @@ controllers work.
 <tr>
 <td align="center">
 <img src="animations/walk_ripple.gif" alt="Ripple gait" width="100%"/><br/>
-<sub><b>Ripple gait.</b>  ω = 3.0 rad/s.  An emergent intermediate; four legs in stance, two in swing, distributed.</sub>
+<sub><b>Ripple gait.</b>  ω = 3.0 rad/s.  The intermediate blend between the wave and tripod offsets; about four legs in stance at a time.</sub>
 </td>
 <td align="center">
 <img src="animations/phase_wheel_lockin.gif" alt="Phase-wheel convergence" width="100%"/><br/>
-<sub><b>Phase-wheel lock-in.</b>  Six dots on the unit circle, scattered at t = 0, collapse into the tripod attractor by t ≈ 3 s — emergence in motion.</sub>
+<sub><b>Phase-wheel lock-in.</b>  Six dots on the unit circle, scattered at t = 0, lock into the tripod pattern within a few seconds.</sub>
 </td>
 </tr>
 </table>
@@ -183,8 +202,6 @@ controllers work.
 ---
 
 ## Mathematical foundations
-
-> The whole controller pipeline collapses to three layered ideas; skip if familiar.
 
 ### 1. Kuramoto coupled-oscillator network
 
@@ -345,23 +362,7 @@ hexapod-cpg/
 
 ---
 
-## Quick start
-
-```bash
-git clone https://github.com/Janga786/hexapod-cpg.git
-cd hexapod-cpg
-
-python -m venv .venv && source .venv/bin/activate
-
-make dev           # editable install + dev tools
-make test          # 34 passed in < 1 s
-make sim           # launch the live dashboard
-make gallery       # regenerate every figure + animation (≈3 minutes)
-```
-
-Dependencies are intentionally light: `numpy`, `matplotlib`, `pillow`. Tested on Python 3.10, 3.11, 3.12.
-
-### Hello, hexapod
+## Python example
 
 ```python
 import numpy as np
@@ -374,8 +375,9 @@ for _ in range(int(5.0 / 0.02)):           # 5 s @ 50 Hz
     feet = cpg.step(0.02)
 
 print(f"locked-in coherence : {cpg.phase_coherence():.2f}")
-print(f"flange of LF leg    : {feet['LF']}")
+print(f"LF foot position    : {feet['LF']}")
 ```
+
 
 ---
 
@@ -398,7 +400,7 @@ Or call the renderers individually:
 | `python sim/scripts/render_phase_wheel_animation.py` | `animations/phase_wheel_lockin.gif` |
 | `python sim/scripts/render_3d_walk_animation.py` | `animations/walk_{wave,ripple,tripod}.gif` |
 
-All renderers are seeded → re-running on the same machine always produces byte-identical artefacts.
+All renderers use fixed random seeds.
 
 ---
 
@@ -426,21 +428,22 @@ testing of a new build.
 
 ## Hardware overview
 
-The chassis is fully 3-D-printed (PLA + TPU foot bumpers).  All
-22 STL files, the SolidWorks source, the full-robot STEP export, and
-a Fusion-360 archive are under [`hardware/cad/`](hardware/cad/).
-Total: ≈ 75 printed parts.
+The chassis is 3-D printed (PLA, with TPU foot bumpers) from Mark W's
+open-source skeleton. The 22 STL files, the SolidWorks parts, a full-robot
+STEP export and a Fusion 360 archive are under [`hardware/cad/`](hardware/cad/).
+The print list in [`docs/printing_instructions.docx`](docs/printing_instructions.docx)
+comes to 124 printed parts.
 
-The electronics:
+Electronics:
 
 - 1 × Arduino Mega 2560
 - 18 × hobby servos (~7-9 kg·cm)
 - 1 × SparkFun ICM-20948 9-DoF IMU
 - 2 × foot-pad bump switches
 - 8 × dual-colour LEDs (battery-status bar)
-- 1 × LiPo (2S/3S) + SBEC
+- 1 × LiPo + SBEC
 
-Full pinout is in [`docs/wiring.md`](docs/wiring.md).
+Full pinout and power tree: [`docs/wiring.md`](docs/wiring.md).
 
 ---
 
@@ -466,40 +469,6 @@ The test suite covers:
 - Duty-factor monotonic decrease with ω
 
 ---
-
-## Roadmap
-
-- **Hardware-in-the-loop bridge.**  Pipe the Python CPG's foot
-  trajectories straight to the Arduino over serial so the real robot
-  walks under simulator control — closing the loop between the
-  research-grade controller and the production firmware.
-- **Sensor-feedback CPG.**  Couple ground-contact sensors (currently
-  only the front bump switches) into the oscillator network so a
-  missed footfall locally re-tunes phase, mimicking insect
-  proprioception.
-- **MuJoCo / Mujoco-py port.**  Re-target the geometry module onto
-  MuJoCo for contact-rich rigid-body simulation.  The kinematics are
-  already factored cleanly enough that this is mostly a matter of
-  generating the XML.
-- **Closed-form gait optimisation.**  Search ω, K, σ jointly to
-  minimise cost-of-transport on rough terrain — a small
-  reinforcement-learning loop on top of the existing CPG.
-
----
-
-## Attribution
-
-The field robot was a **four-person team effort** (I led the team); teammates'
-challenge-era code lives in the team's own repositories under another GitHub
-account. The leg geometry/IK in the legacy firmware derives from external
-reference implementations credited in the source headers. The chassis skeleton and the
-original PS2-controller firmware are **Mark W's open-source work**
-([projectsofdan.com](https://www.projectsofdan.com/?cat=4)); the autonomous
-heading-hold firmware here is my modification and extension of that original
-(see the header of `firmware/hexapod_full/`). The IMU and PS2 drivers are the
-SparkFun and Bill Porter libraries (references 6-7). The Kuramoto CPG
-simulator, visualizations, and 34-test suite are my later, individual work --
-in simulation only.
 
 ## References
 
@@ -533,13 +502,12 @@ If you reference this code, please cite via the
 
 ## License
 
-[MIT](LICENSE) — software is free for commercial, academic and educational use.
-The mechanical chassis design derives from the open-source
-[Mark W. hexapod skeleton](https://www.projectsofdan.com/) (see [`LICENSE`](LICENSE)).
+The software in this repository, including the `hexapod_cpg` package, is
+released under the [MIT License](LICENSE). The chassis CAD and the sketches
+in `firmware/legacy_ps2/` and `firmware/ps2_test/` derive from Mark W's
+open-source hexapod ([projectsofdan.com](https://www.projectsofdan.com/));
+see the note at the end of [`LICENSE`](LICENSE).
 
 <div align="center">
-<sub>
-Field photographs courtesy of Fort Lewis College — used with permission.<br/>
-<i>"Six legs.  Six oscillators.  Synchronisation does the rest."</i>
-</sub>
+<sub>Field photographs courtesy of Fort Lewis College, used with permission.</sub>
 </div>
