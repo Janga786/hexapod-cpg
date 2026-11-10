@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-title: "Hexapod CPG — Bio-inspired Locomotion on a Custom 18-DoF Robot"
+title: "Hexapod CPG: an 18-DoF field hexapod and a Kuramoto gait simulator"
 message: "If you reference this code in academic or industrial work, please cite as below."
 type: software
 authors:

@@ -3,7 +3,7 @@
 Mechanical CAD, bill-of-materials, and printable-parts list for the
 hexapod chassis.  The printed skeleton is Mark W's open-source
 [hexapod design](https://www.projectsofdan.com/), and the print list
-below is his.  The SolidWorks parts (foot models with sensor mounts,
+below covers his skeleton's parts.  The SolidWorks parts (foot models with sensor mounts,
 a dome cover, a buck-converter holder) were added for this build.
 
 ## Layout

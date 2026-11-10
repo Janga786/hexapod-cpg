@@ -490,7 +490,7 @@ If you reference this code, please cite via the
 ```bibtex
 @software{janga2026hexapod,
   author  = {Bliss, Jangara},
-  title   = {Hexapod CPG: Bio-inspired Locomotion on a Custom 18-DoF Robot},
+  title   = {Hexapod CPG: an 18-DoF field hexapod and a Kuramoto gait simulator},
   year    = {2026},
   version = {1.0.0},
   url     = {https://github.com/Janga786/hexapod-cpg},
